@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ meros.title }}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f7f7fb;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #2b2b52;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            margin-bottom: 10px;
+        }
+        .meta {
+            color: #777;
+            margin-bottom: 20px;
+        }
+        a {
+            color: #2b2b52;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 18px;
+            background-color: #2b2b52;
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            margin-top: 15px;
+        }
+        .btn:hover {
+            background-color: #46467a;
+        }
+        iframe {
+            margin-top: 20px;
+            border-radius: 10px;
+            width: 100%;
+            height: 360px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>{{ meros.title }}</h1>
+    </header>
+
+    <div class="container">
+        <p class="meta">
+            Turi: {{ meros.get_resource_type_display }}<br>
+            {% if meros.teacher %}
+                Muallif: <a href="{{ meros.teacher.get_absolute_url }}">{{ meros.teacher.full_name }}</a><br>
+            {% endif %}
+            Qo‘shilgan sana: {{ meros.created_at|date:"d.m.Y" }}
+        </p>
+
+        {% if meros.lyrics %}
+            <h3>Matni / Tavsifi</h3>
+            <p>{{ meros.lyrics|linebreaks }}</p>
+        {% endif %}
+
+        {% if meros.notes_file %}
+            <p><a class="btn" href="{{ meros.notes_file.url }}" target="_blank">🎵 Nota faylini yuklab olish</a></p>
+        {% endif %}
+
+        {% if meros.youtube_link %}
+            <h3>YouTube</h3>
+            <iframe src="https://www.youtube.com/embed/{{meros.youtube_link| cut:'https://www.youtube.com/watch?v='}}" allowfullscreen>
+            </iframe>
+        {% endif %}
+    </div>
+</body>
+</html>
