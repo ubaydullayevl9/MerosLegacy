@@ -1,12 +1,17 @@
 from pathlib import Path
+import os
+import dj_database_url
+from dotenv import load_dotenv
 
 # --- Базовая директория проекта ---
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # --- Безопасность ---
-SECRET_KEY = 'django-insecure-l1g24st(bgw^9^79lmz48yncpz0*r0rw39=8m-l%x8ka1$zar^'
-DEBUG = True
-ALLOWED_HOSTS = []
+DEBUG = os.getenv("DEBUG", "False") == "True"
+
+SECRET_KEY = os.getenv("SECRET_KEY", "unsafe-secret-key")
+
+ALLOWED_HOSTS = ["*", ".onrender.com"]
 
 # --- Приложения ---
 INSTALLED_APPS = [
@@ -52,10 +57,8 @@ WSGI_APPLICATION = 'meros.wsgi.application'
 
 # --- База данных ---
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default':
+        dj_database_url.config(default=os.getenv("DATABASE_URL"))
 }
 
 # --- Валидация пароля ---
@@ -74,6 +77,10 @@ USE_TZ = True
 
 # --- ⚙️ Статические и медиа файлы ---
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+MIDDLEWARE.insert(1, "whitemoise.middleware.WhiteNoiseMiddleware")
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # 📂 Где хранятся твои CSS, JS, картинки проекта
 STATICFILES_DIRS = [
