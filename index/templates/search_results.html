@@ -31,6 +31,21 @@
         }
         a { color: #0078ff; text-decoration: none; }
         a:hover { text-decoration: underline; }
+        nav {
+            display: flex;
+            gap: 25px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #ffffff;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #0078ff;
+        }
     </style>
 </head>
 <body>
@@ -40,6 +55,14 @@
         <input type="text" name="q" placeholder="Qidiruv..." value="{{ query }}">
         <button type="submit">Izlash</button>
     </form>
+    <nav>
+        <a href="/">Bosh sahifa</a>
+        <a href="/teachers/">Ustozlar</a>
+        <a href="/meros/">Meroslar</a>
+        <a href="#">Loyihalar</a>
+        <a href="#">Aloqa</a>
+        </nav>
+    </header>
 </header>
 
 <div class="results">

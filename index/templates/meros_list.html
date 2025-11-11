@@ -8,7 +8,10 @@
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
-            background: #f4f4f8;
+            background-image: url("{% static 'images/naqshc.png' %}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
             margin: 0;
             padding: 0;
         }
@@ -55,11 +58,34 @@
         .btn:hover {
             background-color: #46467a;
         }
+        nav {
+            display: flex;
+            gap: 25px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #ffffff;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #0078ff;
+        }
     </style>
 </head>
 <body>
     <header>
         <h1>Meroslar (Maqomlar va Kompozitsiyalar)</h1>
+        <nav>
+        <a href="/">Bosh sahifa</a>
+        <a href="/teachers/">Ustozlar</a>
+        <a href="/meros/">Meroslar</a>
+        <a href="#">Loyihalar</a>
+        <a href="#">Aloqa</a>
+        </nav>
+    </header>
     </header>
 
     <div class="container">

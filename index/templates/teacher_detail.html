@@ -9,7 +9,10 @@
         body {
             margin: 0;
             font-family: 'Open Sans', sans-serif;
-            background-color: #f9f9f9;
+            background-image: url("{% static 'images/teacher.png' %}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
             color: #333;
         }
 
@@ -107,6 +110,21 @@
 
         a.back:hover {
             background: #004999;
+            nav {
+            display: flex;
+            gap: 25px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #ffffff;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #0078ff;
+        }
         }
     </style>
 </head>
@@ -117,9 +135,11 @@
     <nav>
         <a href="/">Bosh sahifa</a>
         <a href="/teachers/">Ustozlar</a>
+        <a href="/meros/">Meroslar</a>
         <a href="#">Loyihalar</a>
         <a href="#">Aloqa</a>
-    </nav>
+        </nav>
+    </header>
 </header>
 
 <div class="container">
