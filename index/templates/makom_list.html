@@ -1,0 +1,104 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>Makomlar</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-image: url("{% static 'images/naqshc.png' %}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #2b2b52;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 30px auto;
+        }
+        .makom-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: transform 0.2s;
+        }
+        .makom-card:hover {
+            transform: translateY(-4px);
+        }
+        .makom-title {
+            font-size: 22px;
+            color: #333;
+            text-decoration: none;
+        }
+        .makom-meta {
+            color: #666;
+            margin-top: 5px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #2b2b52;
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            margin-top: 10px;
+        }
+        .btn:hover {
+            background-color: #46467a;
+        }
+        nav {
+            display: flex;
+            gap: 25px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #ffffff;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #0078ff;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Makomlar ro'yxati</h1>
+        <nav>
+            <a href="/">Bosh sahifa</a>
+            <a href="/teachers/">Ustozlar</a>
+            <a href="/meros/">Meroslar</a>
+            <a href="#">Loyihalar</a>
+            <a href="#">Aloqa</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        {% for makom in makomlar %}
+            <div class="makom-card">
+                <h2><a class="makom-title" href="{% url 'makom_detail' slug=makom.slug %}">{{ makom.name }}</a></h2>
+                {% if makom.description %}
+                    <p class="makom-meta">{{ makom.description|truncatewords:20 }}</p>
+                {% endif %}
+                <a class="btn" href="{% url 'makom_detail' slug=makom.slug %}">Batafsil</a>
+            </div>
+        {% empty %}
+            <p>Hozircha maqomlar mavjud emas.</p>
+        {% endfor %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>O'qituvchilar ro'yxati</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #222;
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-image: url("{% static 'images/naqshc.png' %}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        h1 {
+            color: #003366;
+            text-align: center;
+        }
+        .teacher-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .teacher-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            width: 220px;
+            text-align: center;
+            padding: 15px;
+            text-decoration: none;
+            color: black;
+            transition: 0.3s;
+        }
+        .teacher-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .teacher-card img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        .teacher-name {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #003366;
+        }
+        .teacher-prof {
+            font-size: 14px;
+            color: #555;
+        }
+        nav {
+            display: flex;
+            gap: 25px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #ffffff;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #0078ff;
+        }
+    </style>
+</head>
+<body>
+    <h1>O'qituvchilar</h1>
+    <div class="teacher-list">
+        {% for teacher in teachers %}
+            <a href="{% url 'teacher_detail' slug=teacher.slug %}" class="teacher-card">
+                {% if teacher.photo %}
+                    <img src="{{ teacher.photo.url }}" alt="{{ teacher.full_name }}">
+                {% endif %}
+                <div class="teacher-name">{{ teacher.full_name }}</div>
+                <div class="teacher-prof">{{ teacher.profession }}</div>
+            </a>
+        {% empty %}
+            <p>Hozircha o‘qituvchilar yo‘q.</p>
+        {% endfor %}
+    </div>
+</body>
+</html>

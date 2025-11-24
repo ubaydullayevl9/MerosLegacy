@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>Qidiruv natijalari</title>
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+        }
+        header {
+            background: #fff;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        header h1 { font-family: 'Playfair Display', serif; margin: 0; }
+        .results { max-width: 900px; margin: 40px auto; }
+        h2 { border-bottom: 2px solid #0078ff; padding-bottom: 8px; }
+        .item {
+            background: #fff;
+            margin-bottom: 20px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+        a { color: #0078ff; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        nav {
+            display: flex;
+            gap: 25px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #ffffff;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #0078ff;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1><a href="/">MerosLegacy</a></h1>
+    <form method="get" action="/search/">
+        <input type="text" name="q" placeholder="Qidiruv..." value="{{ query }}">
+        <button type="submit">Izlash</button>
+    </form>
+    <nav>
+        <a href="/">Bosh sahifa</a>
+        <a href="/teachers/">Ustozlar</a>
+        <a href="/meros/">Meroslar</a>
+        <a href="#">Loyihalar</a>
+        <a href="#">Aloqa</a>
+        </nav>
+    </header>
+</header>
+
+<div class="results">
+    <h2>Natijalar "{{ query }}" uchun:</h2>
+
+    {% if teachers %}
+        <h3>Ustozlar</h3>
+        {% for teacher in teachers %}
+            <div class="item">
+                <a href="{% url 'teacher_detail' teacher.slug %}">{{ teacher.full_name }}</a>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% if meroslar %}
+        <h3>Meroslar</h3>
+        {% for meros in meroslar %}
+            <div class="item">
+                <a href="{% url 'meros_detail' meros.slug %}">{{ meros.title }}</a>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% if not teachers and not meroslar %}
+        <p>Hech narsa topilmadi 😔</p>
+    {% endif %}
+</div>
+
+</body>
+</html>

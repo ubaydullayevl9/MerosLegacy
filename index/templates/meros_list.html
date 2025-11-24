@@ -1,0 +1,106 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>Meroslar</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-image: url("{% static 'images/naqshc.png' %}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #2b2b52;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 30px auto;
+        }
+        .meros-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: transform 0.2s;
+        }
+        .meros-card:hover {
+            transform: translateY(-4px);
+        }
+        .meros-title {
+            font-size: 22px;
+            color: #333;
+            text-decoration: none;
+        }
+        .meros-meta {
+            color: #666;
+            margin-top: 5px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #2b2b52;
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            margin-top: 10px;
+        }
+        .btn:hover {
+            background-color: #46467a;
+        }
+        nav {
+            display: flex;
+            gap: 25px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #ffffff;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #0078ff;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Meroslar (Maqomlar va Kompozitsiyalar)</h1>
+        <nav>
+        <a href="/">Bosh sahifa</a>
+        <a href="/teachers/">Ustozlar</a>
+        <a href="/meros/">Meroslar</a>
+        <a href="#">Loyihalar</a>
+        <a href="#">Aloqa</a>
+        </nav>
+    </header>
+    </header>
+
+    <div class="container">
+        {% for meros in meroslar %}
+            <div class="meros-card">
+                <h2><a class="meros-title" href="{{ meros.get_absolute_url }}">{{ meros.title }}</a></h2>
+                <p class="meros-meta">
+                    Turi: {{ meros.get_resource_type_display }}<br>
+                    {% if meros.teacher %}Muallif: {{ meros.teacher.full_name }}{% endif %}
+                </p>
+                <a class="btn" href="{{ meros.get_absolute_url }}">Batafsil</a>
+            </div>
+        {% empty %}
+            <p>Hozircha meroslar mavjud emas.</p>
+        {% endfor %}
+    </div>
+</body>
+</html>
