@@ -42,11 +42,17 @@ def search_view(request):
     ) if query else []
 
 
+    kuys = Kuy.objects.filter(
+        Q(name__icontains=query)
+    ) if query else []
+
+
 
     context = {
         'query': query,
         'teachers': teachers,
         'meroslar': meroslar,
+        'kuys': kuys,
     }
 
     return render(request, 'search_results.html', context)

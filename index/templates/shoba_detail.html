@@ -80,7 +80,7 @@
         <a href="/">Bosh sahifa</a>
         <a href="/teachers/">Ustozlar</a>
         <a href="/meros/">Meroslar</a>
-        <a href="#">Loyihalar</a>
+        <a href="/maqomlar/">Shashmaqom</a>
         <a href="#">Aloqa</a>
     </nav>
 </header>
@@ -96,7 +96,7 @@
     {% if kuys %}
         {% for kuy in kuys %}
             <div class="card">
-                <h3><a class="card-title" href="{% url 'kuy_detail' slug=kuy.slug %}">{{ kuy.title }}</a></h3>
+                <h2 class="kuy-title" >{{ kuy.name }}</h2>
                 {% if kuy.description %}
                     <p class="card-meta">{{ kuy.description|truncatewords:20 }}</p>
                 {% endif %}

@@ -35,14 +35,12 @@
             display: flex;
             gap: 25px;
         }
-
         nav a {
             text-decoration: none;
             color: #ffffff;
             font-weight: 500;
             transition: 0.3s;
         }
-
         nav a:hover {
             color: #0078ff;
         }
@@ -61,8 +59,7 @@
         <a href="/meros/">Meroslar</a>
         <a href="#">Loyihalar</a>
         <a href="#">Aloqa</a>
-        </nav>
-    </header>
+    </nav>
 </header>
 
 <div class="results">
@@ -72,7 +69,7 @@
         <h3>Ustozlar</h3>
         {% for teacher in teachers %}
             <div class="item">
-                <a href="{% url 'teacher_detail' teacher.slug %}">{{ teacher.full_name }}</a>
+                <a href="{{ teacher.get_absolute_url }}">{{ teacher.full_name }}</a>
             </div>
         {% endfor %}
     {% endif %}
@@ -81,12 +78,21 @@
         <h3>Meroslar</h3>
         {% for meros in meroslar %}
             <div class="item">
-                <a href="{% url 'meros_detail' meros.slug %}">{{ meros.title }}</a>
+                <a href="{{ meros.get_absolute_url }}">{{ meros.title }}</a>
             </div>
         {% endfor %}
     {% endif %}
 
-    {% if not teachers and not meroslar %}
+    {% if kuys %}
+        <h3>Maqomlar</h3>
+        {% for kuy in kuys %}
+            <div class="item">
+                <a href="{{ kuy.get_absolute_url }}">{{ kuy.name }}</a>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% if not teachers and not meroslar and not kuys %}
         <p>Hech narsa topilmadi 😔</p>
     {% endif %}
 </div>

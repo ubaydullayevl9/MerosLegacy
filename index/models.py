@@ -43,8 +43,8 @@ class Teacher(models.Model):
 # ✅ Новая модель — для макомов и композиций
 class Meros(models.Model):
     RESOURCE_TYPES = [
-        ('maqom', 'Maqom'),
-        ('composition', 'Kompozitsiya'),
+        ('asar', 'Xalq kuyi'),
+        ('composition', 'Bastakorlik asari'),
     ]
 
     title = models.CharField(max_length=255, verbose_name="Nom")
@@ -145,4 +145,8 @@ class Kuy(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse("kuy_detail",
+                       kwargs={"slug": self.slug})
 
