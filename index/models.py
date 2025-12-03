@@ -134,7 +134,7 @@ class Kuy(models.Model):
 
     name = models.CharField(max_length=150)
     notes = models.FileField(upload_to="notes/", blank=True, null=True)
-    youtube_link = models.URLField(blank=True, null=True)
+    youtube_link = models.URLField(blank=True, null=True, verbose_name="YouTube havolasi")
 
     slug = models.SlugField(blank=True)
 

@@ -1,0 +1,4 @@
+gunicorn
+pillow
+mysqlclient
+python-dotenv
