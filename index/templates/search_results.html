@@ -1,101 +1,96 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="uz">
-<head>
-    <meta charset="UTF-8">
-    <title>Qidiruv natijalari</title>
-    <style>
-        body {
-            font-family: 'Open Sans', sans-serif;
-            background-color: #f9f9f9;
-            margin: 0;
-            padding: 20px;
-        }
-        header {
-            background: #fff;
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        header h1 { font-family: 'Playfair Display', serif; margin: 0; }
-        .results { max-width: 900px; margin: 40px auto; }
-        h2 { border-bottom: 2px solid #0078ff; padding-bottom: 8px; }
-        .item {
-            background: #fff;
-            margin-bottom: 20px;
-            padding: 15px 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-        }
-        a { color: #0078ff; text-decoration: none; }
-        a:hover { text-decoration: underline; }
-        nav {
-            display: flex;
-            gap: 25px;
-        }
-        nav a {
-            text-decoration: none;
-            color: #ffffff;
-            font-weight: 500;
-            transition: 0.3s;
-        }
-        nav a:hover {
-            color: #0078ff;
-        }
-    </style>
-</head>
-<body>
-<header>
-    <h1><a href="/">MerosLegacy</a></h1>
-    <form method="get" action="/search/">
-        <input type="text" name="q" placeholder="Qidiruv..." value="{{ query }}">
-        <button type="submit">Izlash</button>
-    </form>
-    <nav>
-        <a href="/">Bosh sahifa</a>
-        <a href="/teachers/">Ustozlar</a>
-        <a href="/meros/">Meroslar</a>
-        <a href="#">Loyihalar</a>
-        <a href="#">Aloqa</a>
-    </nav>
-</header>
 
-<div class="results">
-    <h2>Natijalar "{{ query }}" uchun:</h2>
+{% block title %}Qidiruv natijalari: {{ query }} | MerosLegacy{% endblock %}
 
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 py-10 md:py-16">
+    <!-- Заголовок поиска -->
+    <div class="mb-10 border-b border-gray-200 pb-6">
+        <h2 class="font-playfair text-2xl md:text-3xl font-bold text-gray-900">
+            Qidiruv natijalari: <span class="text-blue-600">"{{ query }}"</span>
+        </h2>
+        <p class="text-gray-500 mt-2 text-sm">
+            Jami topilgan natijalar bo'yicha saralangan ro'yxat
+        </p>
+    </div>
+
+    <!-- Результаты по Учителям -->
     {% if teachers %}
-        <h3>Ustozlar</h3>
-        {% for teacher in teachers %}
-            <div class="item">
-                <a href="{{ teacher.get_absolute_url }}">{{ teacher.full_name }}</a>
+        <section class="mb-12">
+            <h3 class="font-playfair text-xl font-bold text-gray-800 mb-4 flex items-center">
+                <span class="w-1.5 h-6 bg-blue-600 rounded-full mr-2.5"></span>
+                Ustozlar
+            </h3>
+            <div class="grid gap-3">
+                {% for teacher in teachers %}
+                    <a href="{{ teacher.get_absolute_url }}" class="group block bg-white p-4 rounded-xl shadow-sm border border-transparent hover:border-blue-200 hover:shadow-md transition-all">
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-800 font-medium group-hover:text-blue-600 transition">{{ teacher.full_name }}</span>
+                            <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-600 transform group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </div>
+                    </a>
+                {% endfor %}
             </div>
-        {% endfor %}
+        </section>
     {% endif %}
 
+    <!-- Результаты по Наследию -->
     {% if meroslar %}
-        <h3>Meroslar</h3>
-        {% for meros in meroslar %}
-            <div class="item">
-                <a href="{{ meros.get_absolute_url }}">{{ meros.title }}</a>
+        <section class="mb-12">
+            <h3 class="font-playfair text-xl font-bold text-gray-800 mb-4 flex items-center">
+                <span class="w-1.5 h-6 bg-green-600 rounded-full mr-2.5"></span>
+                Meroslar
+            </h3>
+            <div class="grid gap-3">
+                {% for meros in meroslar %}
+                    <a href="{{ meros.get_absolute_url }}" class="group block bg-white p-4 rounded-xl shadow-sm border border-transparent hover:border-green-200 hover:shadow-md transition-all">
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-800 font-medium group-hover:text-green-600 transition">{{ meros.title }}</span>
+                            <svg class="w-5 h-5 text-gray-400 group-hover:text-green-600 transform group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </div>
+                    </a>
+                {% endfor %}
             </div>
-        {% endfor %}
+        </section>
     {% endif %}
 
+    <!-- Результаты по Макомам -->
     {% if kuys %}
-        <h3>Maqomlar</h3>
-        {% for kuy in kuys %}
-            <div class="item">
-                <a href="{{ kuy.get_absolute_url }}">{{ kuy.name }}</a>
+        <section class="mb-12">
+            <h3 class="font-playfair text-xl font-bold text-gray-800 mb-4 flex items-center">
+                <span class="w-1.5 h-6 bg-amber-600 rounded-full mr-2.5"></span>
+                Maqomlar
+            </h3>
+            <div class="grid gap-3">
+                {% for kuy in kuys %}
+                    <a href="{{ kuy.get_absolute_url }}" class="group block bg-white p-4 rounded-xl shadow-sm border border-transparent hover:border-amber-200 hover:shadow-md transition-all">
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-800 font-medium group-hover:text-amber-600 transition">{{ kuy.name }}</span>
+                            <svg class="w-5 h-5 text-gray-400 group-hover:text-amber-600 transform group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </div>
+                    </a>
+                {% endfor %}
             </div>
-        {% endfor %}
+        </section>
     {% endif %}
 
+    <!-- Если ничего не найдено -->
     {% if not teachers and not meroslar and not kuys %}
-        <p>Hech narsa topilmadi 😔</p>
+        <div class="text-center py-20 bg-white rounded-2xl shadow-sm border border-gray-100">
+            <div class="text-6xl mb-4">😔</div>
+            <h3 class="text-xl font-semibold text-gray-800">Hech narsa topilmadi</h3>
+            <p class="text-gray-500 mt-2">Boshqa so'zlar bilan qidirib ko'ring yoki bosh sahifaga qayting.</p>
+            <a href="/" class="inline-block mt-6 px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                Bosh sahifaga qaytish
+            </a>
+        </div>
     {% endif %}
 </div>
-
-</body>
-</html>
+{% endblock %}

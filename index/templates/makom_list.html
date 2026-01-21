@@ -1,104 +1,69 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="uz">
-<head>
-    <meta charset="UTF-8">
-    <title>Maqomlar</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background-image: url("{% static 'images/naqshc.png' %}");
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background-color: #2b2b52;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-        .container {
-            width: 90%;
-            max-width: 1100px;
-            margin: 30px auto;
-        }
-        .makom-card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            padding: 20px;
-            margin-bottom: 20px;
-            transition: transform 0.2s;
-        }
-        .makom-card:hover {
-            transform: translateY(-4px);
-        }
-        .makom-title {
-            font-size: 22px;
-            color: #333;
-            text-decoration: none;
-        }
-        .makom-meta {
-            color: #666;
-            margin-top: 5px;
-        }
-        .btn {
-            display: inline-block;
-            padding: 8px 16px;
-            background-color: #2b2b52;
-            color: white;
-            border-radius: 8px;
-            text-decoration: none;
-            margin-top: 10px;
-        }
-        .btn:hover {
-            background-color: #46467a;
-        }
-        nav {
-            display: flex;
-            gap: 25px;
-        }
 
-        nav a {
-            text-decoration: none;
-            color: #ffffff;
-            font-weight: 500;
-            transition: 0.3s;
-        }
+{% block title %}Shashmaqom - Maqomlar ro'yxati | MerosLegacy{% endblock %}
 
-        nav a:hover {
-            color: #0078ff;
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <h1>Maqomlar ro'yxati</h1>
-        <nav>
-            <a href="/">Bosh sahifa</a>
-            <a href="/teachers/">Ustozlar</a>
-            <a href="/meros/">Meroslar</a>
-            <a href="/maqomlar">Shashmaqom</a>
-            <a href="#">Aloqa</a>
-        </nav>
-    </header>
+{% block extra_head %}
+<style>
+    body {
+        background-image: url("{% static 'images/naqshc.png' %}");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }
+</style>
+{% endblock %}
 
-    <div class="container">
+{% block content %}
+<div class="max-w-6xl mx-auto px-4 py-10 md:py-16">
+    <!-- Заголовок секции -->
+    <div class="text-center mb-12">
+        <h1 class="font-playfair text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            Shashmaqom
+        </h1>
+        <div class="w-24 h-1 bg-amber-600 mx-auto mb-6"></div>
+        <p class="text-gray-700 max-w-2xl mx-auto text-lg leading-relaxed">
+            O‘zbek xalqining bebaho ma’naviy boyligi, klassik musiqa merosining cho‘qqisi.
+        </p>
+    </div>
+
+    <!-- Список макомов -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
         {% for makom in makomlar %}
-            <div class="makom-card">
-                <h2><a class="makom-title" href="{% url 'makom_detail' slug=makom.slug %}">{{ makom.name }}</a></h2>
-                {% if makom.description %}
-                    <p class="makom-meta">{{ makom.description|truncatewords:20 }}</p>
-                {% endif %}
-                <a class="btn" href="{% url 'makom_detail' slug=makom.slug %}">Batafsil</a>
+            <div class="group bg-white/95 backdrop-blur-sm rounded-2xl shadow-sm border-l-8 border-l-amber-600 p-6 md:p-8 hover:shadow-xl transition-all duration-300 flex flex-col justify-between border-y border-r border-gray-100">
+                <div>
+                    <div class="flex justify-between items-start mb-4">
+                        <h2 class="font-playfair text-2xl md:text-3xl font-bold text-gray-900 group-hover:text-amber-700 transition">
+                            <a href="{% url 'makom_detail' slug=makom.slug %}">{{ makom.name }}</a>
+                        </h2>
+                        <span class="text-amber-600 opacity-20 group-hover:opacity-100 transition duration-500">
+                            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M18 3a1 1 0 00-1.196-.98l-10 2A1 1 0 006 5v9.114A2.48 2.48 0 005 14c-1.105 0-2 .895-2 2s.895 2 2 2 2-.895 2-2V7.82l8-1.6v5.894A2.48 2.48 0 0014 12c-1.105 0-2 .895-2 2s.895 2 2 2 2-.895 2-2V3z"></path>
+                            </svg>
+                        </span>
+                    </div>
+
+                    {% if makom.description %}
+                        <p class="text-gray-600 leading-relaxed mb-6 italic">
+                            {{ makom.description|truncatewords:20 }}
+                        </p>
+                    {% endif %}
+                </div>
+
+                <div class="mt-auto">
+                    <a href="{% url 'makom_detail' slug=makom.slug %}" class="inline-flex items-center text-amber-700 font-bold hover:text-amber-900 transition tracking-wide uppercase text-sm">
+                        Batafsil tanishish
+                        <svg class="w-5 h-5 ml-2 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                        </svg>
+                    </a>
+                </div>
             </div>
         {% empty %}
-            <p>Hozircha maqomlar mavjud emas.</p>
+            <div class="col-span-full text-center py-20 bg-white/70 backdrop-blur rounded-3xl border border-gray-200 shadow-inner">
+                <p class="text-gray-500 text-xl font-playfair italic">Hozircha maqomlar mavjud emas.</p>
+            </div>
         {% endfor %}
     </div>
-</body>
-</html>
+</div>
+{% endblock %}

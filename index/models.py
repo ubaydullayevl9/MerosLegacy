@@ -129,14 +129,49 @@ class Shoba(models.Model):  # только если Nasr
 
 
 class Kuy(models.Model):
-    shoba = models.ForeignKey(Shoba, on_delete=models.CASCADE, null=True, blank=True)
-    bolim = models.ForeignKey(Bolim, on_delete=models.CASCADE, null=True, blank=True)
+    shoba = models.ForeignKey(
+        Shoba,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="kuys"
+    )
+    bolim = models.ForeignKey(
+        Bolim,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="kuys"
+    )
 
-    name = models.CharField(max_length=150)
-    notes = models.FileField(upload_to="notes/", blank=True, null=True)
-    youtube_link = models.URLField(blank=True, null=True, verbose_name="YouTube havolasi")
+    name = models.CharField(max_length=150, verbose_name="Kuy nomi")
+
+    lyrics = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="Matni / Tavsifi"
+    )
+
+    notes = models.FileField(
+        upload_to="kuys/notes/",
+        blank=True,
+        null=True,
+        verbose_name="Nota (PDF)"
+    )
+
+    youtube_link = models.URLField(
+        blank=True,
+        null=True,
+        verbose_name="YouTube havolasi"
+    )
 
     slug = models.SlugField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Kuy"
+        verbose_name_plural = "Kuylari"
+        ordering = ["name"]
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -147,6 +182,5 @@ class Kuy(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("kuy_detail",
-                       kwargs={"slug": self.slug})
+        return reverse("kuy_detail", kwargs={"slug": self.slug})
 

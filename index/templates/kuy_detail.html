@@ -1,110 +1,94 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="uz">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ kuy.name }}</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background-image: url("{% static 'images/naqshc.png' %}");
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background-color: #2b2b52;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-        .container {
-            width: 90%;
-            max-width: 1100px;
-            margin: 30px auto;
-        }
-        .card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            padding: 20px;
-            margin-bottom: 20px;
-            transition: transform 0.2s;
-        }
-        .card:hover {
-            transform: translateY(-4px);
-        }
-        .card-title {
-            font-size: 22px;
-            color: #333;
-            text-decoration: none;
-        }
-        .card-meta {
-            color: #666;
-            margin-top: 5px;
-        }
-        .btn {
-            display: inline-block;
-            padding: 8px 16px;
-            background-color: #2b2b52;
-            color: white;
-            border-radius: 8px;
-            text-decoration: none;
-            margin-top: 10px;
-        }
-        .btn:hover {
-            background-color: #46467a;
-        }
-        nav {
-            display: flex;
-            gap: 25px;
-        }
-        nav a {
-            text-decoration: none;
-            color: #ffffff;
-            font-weight: 500;
-            transition: 0.3s;
-        }
-        nav a:hover {
-            color: #0078ff;
-        }
-        iframe {
-            width: 100%;
-            height: 400px;
-            margin-top: 15px;
-        }
-    </style>
-</head>
-<body>
-<header>
-    <h1>{{ kuy.name }}</h1>
-    <nav>
-        <a href="/">Bosh sahifa</a>
-        <a href="/teachers/">Ustozlar</a>
-        <a href="/meros/">Meroslar</a>
-        <a href="/maqomlar">Shashmaqom</a>
-        <a href="#">Aloqa</a>
-    </nav>
-</header>
 
-<div class="container">
-    {% if kuy.notes %}
-        <div class="card">
-            <h3 class="card-title">Nota</h3>
-            <a class="btn" href="{{ kuy.notes.url }}" target="_blank">Yuklab olish</a>
-        </div>
-    {% endif %}
+{% block title %}{{ kuy.name }} | Shashmaqom | MerosLegacy{% endblock %}
 
-    {% if kuy.youtube_link %}
-        <div class="card">
-            <h3 class="card-title">YouTube video</h3>
-            <iframe src="https://www.youtube.com/embed/{{kuy.youtube_link| cut:'https://www.youtube.com/watch?v='}}" allowfullscreen>
-            </iframe>
+{% block extra_head %}
+<style>
+    body {
+        background-image: url("{% static 'images/naqshc.png' %}");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 py-8 md:py-16">
+    <!-- Кнопка назад (к списку макомов или разделу) -->
+    <button onclick="history.back()" class="inline-flex items-center text-amber-700 hover:text-amber-900 font-medium mb-6 transition cursor-pointer">
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+        </svg>
+        Ortga qaytish
+    </button>
+
+    <article class="bg-white rounded-2xl shadow-xl overflow-hidden border border-amber-100">
+        <!-- Заголовок произведения -->
+        <div class="p-6 md:p-10 border-b border-amber-50 bg-amber-50/30 text-center">
+            <h1 class="font-playfair text-3xl md:text-5xl font-bold text-gray-900 leading-tight">
+                {{ kuy.name }}
+            </h1>
+            <div class="w-20 h-1 bg-amber-600 mx-auto mt-4 rounded-full"></div>
         </div>
-    {% endif %}
+
+        <div class="p-6 md:p-10 space-y-10">
+
+            <!-- Блок с нотами (PDF) -->
+            {% if kuy.notes %}
+            <section class="bg-amber-50 rounded-xl p-6 border border-amber-100 shadow-sm">
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="flex items-center">
+                        <div class="bg-white p-3 rounded-lg shadow-sm mr-4">
+                            <svg class="w-8 h-8 text-amber-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M18 3a1 1 0 00-1.196-.98l-10 2A1 1 0 006 5v9.114A2.48 2.48 0 005 14c-1.105 0-2 .895-2 2s.895 2 2 2 2-.895 2-2V7.82l8-1.6v5.894A2.48 2.48 0 0014 12c-1.105 0-2 .895-2 2s.895 2 2 2 2-.895 2-2V3z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-amber-900">Musiqiy nota (PDF)</h4>
+                            <p class="text-sm text-amber-700">Asarning nota yozuvini yuklab oling</p>
+                        </div>
+                    </div>
+                    <a href="{{ kuy.notes.url }}" target="_blank" class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 bg-amber-600 text-white font-bold rounded-lg hover:bg-amber-700 shadow-md transition">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                        </svg>
+                        Yuklab olish
+                    </a>
+                </div>
+            </section>
+            {% endif %}
+
+            <!-- Текст / Описание -->
+            {% if kuy.lyrics %}
+            <section>
+                <h3 class="font-playfair text-2xl font-bold text-gray-900 mb-4 flex items-center">
+                    <span class="w-2 h-8 bg-amber-600 rounded-full mr-3"></span>
+                    Matni / Tavsifi
+                </h3>
+                <div class="text-gray-700 leading-relaxed text-lg prose max-w-none bg-gray-50 p-6 rounded-xl border border-gray-100">
+                    {{ kuy.lyrics|linebreaks }}
+                </div>
+            </section>
+            {% endif %}
+
+            <!-- Видео (YouTube) -->
+            {% if kuy.youtube_link %}
+            <section>
+                <h3 class="font-playfair text-2xl font-bold text-gray-900 mb-4 flex items-center">
+                    <span class="w-2 h-8 bg-red-600 rounded-full mr-3"></span>
+                    Video ijro (YouTube)
+                </h3>
+                <div class="relative w-full aspect-video rounded-2xl overflow-hidden shadow-2xl bg-black border-4 border-white">
+                    <iframe class="absolute top-0 left-0 w-full h-full"
+                        src="https://www.youtube.com/embed/{{ kuy.youtube_link|cut:'https://www.youtube.com/watch?v=' }}"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </section>
+            {% endif %}
+        </div>
+    </article>
 </div>
-</body>
-</html>
+{% endblock %}

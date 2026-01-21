@@ -1,181 +1,94 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="uz">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ teacher.full_name }} | MerosLegacy</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Open+Sans&display=swap" rel="stylesheet">
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Open Sans', sans-serif;
-            background-image: url("{% static 'images/naqshc.png' %}");
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            color: #333;
-        }
 
-        header {
-            background-color: #fff;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+{% block title %}{{ teacher.full_name }} | MerosLegacy{% endblock %}
 
-        header h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 24px;
-            color: #222;
-            margin: 0;
-        }
+{% block extra_head %}
+<style>
+    body {
+        background-image: url("{% static 'images/naqshc.png' %}");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }
+</style>
+{% endblock %}
 
-        nav a {
-            text-decoration: none;
-            color: #333;
-            margin-left: 20px;
-            font-weight: 500;
-        }
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 py-8 md:py-16">
+    <!-- Кнопка назад -->
+    <a href="/teachers/" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium mb-6 transition">
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+        </svg>
+        Ortga qaytish
+    </a>
 
-        nav a:hover {
-            color: #0066cc;
-        }
+    <!-- Основная карточка -->
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+        <div class="md:flex">
+            <!-- Фото преподавателя -->
+            <div class="md:w-1/3 bg-gray-100 flex items-center justify-center p-6">
+                {% if teacher.photo %}
+                    <img src="{{ teacher.photo.url }}" alt="{{ teacher.full_name }}"
+                         class="rounded-xl shadow-md w-full max-w-[280px] object-cover aspect-[3/4]">
+                {% else %}
+                    <div class="w-full aspect-[3/4] bg-gray-200 rounded-xl flex items-center justify-center">
+                        <span class="text-gray-400">Rasm mavjud emas</span>
+                    </div>
+                {% endif %}
+            </div>
 
-        .container {
-            max-width: 900px;
-            margin: 60px auto;
-            background: white;
-            border-radius: 10px;
-            padding: 40px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
+            <!-- Краткая информация -->
+            <div class="md:w-2/3 p-8 md:p-10">
+                <h2 class="font-playfair text-3xl md:text-4xl font-bold text-gray-900 mb-4">{{ teacher.full_name }}</h2>
+                <div class="space-y-3 text-gray-700">
+                    <p class="flex border-b border-gray-100 pb-2">
+                        <span class="font-semibold w-40 text-gray-500">Tug'ilgan sanasi:</span>
+                        <span>{{ teacher.birth_date }}</span>
+                    </p>
+                    {% if teacher.death_date %}
+                    <p class="flex border-b border-gray-100 pb-2 text-red-700">
+                        <span class="font-semibold w-40 text-gray-500">Vafot etgan sanasi:</span>
+                        <span>{{ teacher.death_date }}</span>
+                    </p>
+                    {% endif %}
+                    <p class="flex border-b border-gray-100 pb-2">
+                        <span class="font-semibold w-40 text-gray-500">Tug'ilgan joyi:</span>
+                        <span>{{ teacher.birth_place }}</span>
+                    </p>
+                    <p class="flex border-b border-gray-100 pb-2">
+                        <span class="font-semibold w-40 text-gray-500">Kasbi:</span>
+                        <span class="text-blue-600 font-medium">{{ teacher.profession }}</span>
+                    </p>
+                </div>
+            </div>
+        </div>
 
-        .teacher-photo {
-            text-align: center;
-            margin-bottom: 25px;
-        }
+        <!-- Подробные секции -->
+        <div class="p-8 md:p-10 bg-gray-50/50 space-y-10">
+            <!-- Биография -->
+            <section>
+                <h3 class="font-playfair text-2xl font-bold text-gray-900 mb-4 flex items-center">
+                    <span class="w-2 h-8 bg-blue-600 rounded-full mr-3"></span>
+                    Biografiya
+                </h3>
+                <div class="text-gray-700 leading-relaxed text-lg whitespace-pre-line">
+                    {{ teacher.biography }}
+                </div>
+            </section>
 
-        .teacher-photo img {
-            border-radius: 10px;
-            max-width: 300px;
-            height: auto;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
-        }
-
-        h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 30px;
-            text-align: center;
-            color: #222;
-            margin-bottom: 10px;
-        }
-
-        .info p {
-            font-size: 17px;
-            margin: 8px 0;
-        }
-
-        .section {
-            margin-top: 30px;
-        }
-
-        .section h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 22px;
-            border-left: 4px solid #0066cc;
-            padding-left: 10px;
-            color: #0066cc;
-            margin-bottom: 10px;
-        }
-
-        footer {
-            text-align: center;
-            background-color: #222;
-            color: white;
-            padding: 20px;
-            margin-top: 50px;
-        }
-
-        a.back {
-            display: inline-block;
-            margin-top: 25px;
-            background: #0066cc;
-            color: white;
-            padding: 10px 18px;
-            text-decoration: none;
-            border-radius: 6px;
-        }
-
-        a.back:hover {
-            background: #004999;
-            nav {
-            display: flex;
-            gap: 25px;
-        }
-
-        nav a {
-            text-decoration: none;
-            color: #ffffff;
-            font-weight: 500;
-            transition: 0.3s;
-        }
-
-        nav a:hover {
-            color: #0078ff;
-        }
-        }
-    </style>
-</head>
-<body>
-
-<header>
-    <h1>MerosLegacy</h1>
-    <nav>
-        <a href="/">Bosh sahifa</a>
-        <a href="/teachers/">Ustozlar</a>
-        <a href="/meros/">Meroslar</a>
-        <a href="/maqomlar">Shashmaqom</a>
-        <a href="#">Aloqa</a>
-        </nav>
-    </header>
-</header>
-
-<div class="container">
-    <div class="teacher-photo">
-        {% if teacher.photo %}
-            <img src="{{ teacher.photo.url }}" alt="{{ teacher.full_name }}">
-        {% endif %}
+            <!-- Достижения -->
+            <section>
+                <h3 class="font-playfair text-2xl font-bold text-gray-900 mb-4 flex items-center">
+                    <span class="w-2 h-8 bg-blue-600 rounded-full mr-3"></span>
+                    Yutuqlari
+                </h3>
+                <div class="text-gray-700 leading-relaxed text-lg whitespace-pre-line">
+                    {{ teacher.achievements }}
+                </div>
+            </section>
+        </div>
     </div>
-
-    <h2>{{ teacher.full_name }}</h2>
-
-    <div class="info">
-        <p><b>Tug'ilgan sanasi:</b> {{ teacher.birth_date }}</p>
-        {% if teacher.death_date %}
-            <p><b>Vafot etgan sanasi:</b> {{ teacher.death_date }}</p>
-        {% endif %}
-        <p><b>Tug'ilgan joyi:</b> {{ teacher.birth_place }}</p>
-        <p><b>Kasbi:</b> {{ teacher.profession }}</p>
-    </div>
-
-    <div class="section">
-        <h3>Biografiya</h3>
-        <p>{{ teacher.biography }}</p>
-    </div>
-
-    <div class="section">
-        <h3>Yutuqlari</h3>
-        <p>{{ teacher.achievements }}</p>
-    </div>
-
-    <a href="/teachers/" class="back">⬅️ Ortga qaytish</a>
 </div>
-
-<footer>
-    <p>© 2025 MerosLegacy. Barcha huquqlar himoyalangan.</p>
-</footer>
-
-</body>
-</html>
+{% endblock %}

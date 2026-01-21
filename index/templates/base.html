@@ -1,0 +1,94 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}MerosLegacy{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        html { font-family: 'Open Sans', sans-serif; }
+        .font-playfair { font-family: 'Playfair Display', serif; }
+    </style>
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
+
+<header class="fixed top-0 left-0 w-full z-50 backdrop-blur bg-white/80 shadow-sm">
+    <div class="max-w-7xl mx-auto flex items-center justify-between px-4 py-3 md:py-4">
+        <!-- Hamburger for mobile -->
+        <button id="menuBtn" type="button" class="md:hidden inline-flex items-center justify-center rounded-md text-gray-700 hover:bg-gray-200 focus:outline-none mr-2">
+            <svg class="h-7 w-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 8h16M4 16h16"/>
+            </svg>
+        </button>
+        <!-- Logo -->
+        <a href="/" class="text-2xl font-playfair font-semibold text-gray-900">MerosLegacy</a>
+        <!-- Desktop nav -->
+        <nav class="hidden md:flex gap-7 ml-8 flex-1">
+            <a href="/" class="font-medium text-gray-800 hover:text-blue-600 transition">Bosh sahifa</a>
+            <a href="/teachers/" class="font-medium text-gray-800 hover:text-blue-600 transition">Ustozlar</a>
+            <a href="/meros/" class="font-medium text-gray-800 hover:text-blue-600 transition">Meroslar</a>
+            <a href="/maqomlar" class="font-medium text-gray-800 hover:text-blue-600 transition">Shashmaqom</a>
+        </nav>
+        <!-- Search bar desktop -->
+        <div class="hidden md:block ml-auto">
+            <form action="{% url 'search' %}" method="get" class="flex">
+                <input type="text" name="q" placeholder="Qidiruv..." required class="rounded-l-md border border-gray-300 bg-white px-3 py-1.5 focus:border-blue-500 focus:outline-none w-40 text-sm">
+                <button type="submit" class="rounded-r-md bg-blue-600 px-4 py-1.5 text-white font-semibold hover:bg-blue-700 transition text-sm">Qidirish</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Mobile side drawer -->
+    <div id="drawerOverlay" class="fixed inset-0 bg-black/40 z-50 hidden"></div>
+    <aside id="drawerMenu" class="fixed top-0 left-0 h-full w-72 max-w-full bg-white shadow-lg z-50 transform -translate-x-full transition-transform duration-300 flex flex-col">
+        <div class="flex items-center justify-between p-4 border-b border-gray-100">
+            <span class="text-xl font-playfair font-semibold text-gray-900">MerosLegacy</span>
+            <button id="closeDrawer" class="rounded-md text-gray-700 hover:bg-gray-200 p-1.5">
+                <svg class="h-7 w-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+        <nav class="flex flex-col gap-2 px-6 mt-8">
+            <a href="/" class="py-2 text-gray-800 hover:text-blue-600 font-medium transition">Bosh sahifa</a>
+            <a href="/teachers/" class="py-2 text-gray-800 hover:text-blue-600 font-medium transition">Ustozlar</a>
+            <a href="/meros/" class="py-2 text-gray-800 hover:text-blue-600 font-medium transition">Meroslar</a>
+            <a href="/maqomlar" class="py-2 text-gray-800 hover:text-blue-600 font-medium transition">Shashmaqom</a>
+        </nav>
+    </aside>
+</header>
+
+<main class="flex-1 flex flex-col pt-[72px] md:pt-[88px]">
+    {% block content %}
+    <!-- Сюда будет вставляться контент из других файлов -->
+    {% endblock %}
+</main>
+
+<footer class="w-full mt-16 py-7 px-5 bg-gray-900 text-gray-300 text-center text-sm">
+    <p>© 2026 MerosLegacy. Barcha huquqlar himoyalangan.</p>
+</footer>
+
+<script>
+    const menuBtn = document.getElementById('menuBtn');
+    const drawer = document.getElementById('drawerMenu');
+    const overlay = document.getElementById('drawerOverlay');
+    const closeBtn = document.getElementById('closeDrawer');
+
+    function openDrawer() {
+        drawer.classList.remove('-translate-x-full');
+        overlay.classList.remove('hidden');
+    }
+    function closeDrawer() {
+        drawer.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+    }
+    menuBtn.addEventListener('click', openDrawer);
+    closeBtn.addEventListener('click', closeDrawer);
+    overlay.addEventListener('click', closeDrawer);
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDrawer(); });
+</script>
+</body>
+</html>

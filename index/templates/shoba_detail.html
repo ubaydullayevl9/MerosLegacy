@@ -1,111 +1,89 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="uz">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ shoba.name }}</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background-image: url("{% static 'images/naqshc.png' %}");
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background-color: #2b2b52;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-        .container {
-            width: 90%;
-            max-width: 1100px;
-            margin: 30px auto;
-        }
-        .card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            padding: 20px;
-            margin-bottom: 20px;
-            transition: transform 0.2s;
-        }
-        .card:hover {
-            transform: translateY(-4px);
-        }
-        .card-title {
-            font-size: 22px;
-            color: #333;
-            text-decoration: none;
-        }
-        .card-meta {
-            color: #666;
-            margin-top: 5px;
-        }
-        .btn {
-            display: inline-block;
-            padding: 8px 16px;
-            background-color: #2b2b52;
-            color: white;
-            border-radius: 8px;
-            text-decoration: none;
-            margin-top: 10px;
-        }
-        .btn:hover {
-            background-color: #46467a;
-        }
-        nav {
-            display: flex;
-            gap: 25px;
-        }
-        nav a {
-            text-decoration: none;
-            color: #ffffff;
-            font-weight: 500;
-            transition: 0.3s;
-        }
-        nav a:hover {
-            color: #0078ff;
-        }
-    </style>
-</head>
-<body>
-<header>
-    <h1>{{ shoba.name }}</h1>
-    <nav>
-        <a href="/">Bosh sahifa</a>
-        <a href="/teachers/">Ustozlar</a>
-        <a href="/meros/">Meroslar</a>
-        <a href="/maqomlar/">Shashmaqom</a>
-        <a href="#">Aloqa</a>
+
+{% block title %}{{ shoba.name }} | Shobalar | MerosLegacy{% endblock %}
+
+{% block extra_head %}
+<style>
+    body {
+        background-image: url("{% static 'images/naqshc.png' %}");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto px-4 py-8 md:py-16">
+    <!-- Навигация назад (Breadcrumbs) -->
+    <nav class="flex flex-wrap items-center text-sm md:text-base text-amber-700 font-medium mb-8 gap-2">
+        <button onclick="history.back()" class="hover:text-amber-900 transition flex items-center">
+            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            Ortga
+        </button>
+        <span class="text-gray-300">/</span>
+        <span class="text-gray-500">{{ shoba.name }}</span>
     </nav>
-</header>
 
-<div class="container">
-    {% if shoba.description %}
-        <div class="card">
-            <p class="card-meta">{{ shoba.description }}</p>
-        </div>
-    {% endif %}
+    <!-- Заголовок Шобы -->
+    <div class="bg-white/95 backdrop-blur-sm shadow-lg rounded-3xl p-8 md:p-12 border border-amber-100 mb-12 text-center">
+        <h1 class="font-playfair text-3xl md:text-5xl font-bold text-gray-900 mb-4">{{ shoba.name }}</h1>
+        <div class="w-24 h-1 bg-amber-600 mx-auto rounded-full mb-6"></div>
 
-    <h2>Maqomlar</h2>
-    {% if kuys %}
-        {% for kuy in kuys %}
-            <div class="card">
-                <h2 class="kuy-title" >{{ kuy.name }}</h2>
-                {% if kuy.description %}
-                    <p class="card-meta">{{ kuy.description|truncatewords:20 }}</p>
-                {% endif %}
-                <a class="btn" href="{% url 'kuy_detail' slug=kuy.slug %}">Batafsil</a>
+        {% if shoba.description %}
+            <p class="text-gray-700 text-lg md:text-xl leading-relaxed italic max-w-3xl mx-auto">
+                {{ shoba.description }}
+            </p>
+        {% endif %}
+    </div>
+
+    <!-- Заголовок списка произведений -->
+    <div class="flex items-center mb-8">
+        <h2 class="font-playfair text-2xl md:text-3xl font-bold text-gray-900 uppercase tracking-wide">Maqomlar ro'yxati</h2>
+        <div class="flex-1 h-px bg-gray-200 ml-6"></div>
+    </div>
+
+    <!-- Список Maqomlar (Kuys) -->
+    <div class="grid grid-cols-1 gap-6">
+        {% if kuys %}
+            {% for kuy in kuys %}
+                <div class="group bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100 hover:shadow-xl hover:border-amber-200 transition-all duration-300">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-3 mb-2 text-amber-600">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M18 3a1 1 0 00-1.196-.98l-10 2A1 1 0 006 5v9.114A2.48 2.48 0 005 14c-1.105 0-2 .895-2 2s.895 2 2 2 2-.895 2-2V7.82l8-1.6v5.894A2.48 2.48 0 0014 12c-1.105 0-2 .895-2 2s.895 2 2 2 2-.895 2-2V3z"></path>
+                                </svg>
+                                <span class="text-xs font-bold uppercase tracking-widest italic">Musiqiy namuna</span>
+                            </div>
+                            <h3 class="font-playfair text-2xl md:text-3xl font-bold text-gray-900 group-hover:text-amber-700 transition">
+                                {{ kuy.name }}
+                            </h3>
+                            {% if kuy.description %}
+                                <p class="text-gray-600 mt-3 leading-relaxed italic">
+                                    {{ kuy.description|truncatewords:20 }}
+                                </p>
+                            {% endif %}
+                        </div>
+
+                        <div class="shrink-0">
+                            <a href="{% url 'kuy_detail' slug=kuy.slug %}"
+                               class="inline-flex items-center justify-center px-8 py-3.5 bg-gray-900 text-white font-bold rounded-xl hover:bg-amber-600 shadow-md transition-all duration-300 w-full md:w-auto">
+                                Batafsil
+                                <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="text-center py-20 bg-white/50 backdrop-blur rounded-3xl border-2 border-dashed border-gray-200">
+                <p class="text-gray-400 italic text-xl font-playfair">Hozircha maqomlar mavjud emas.</p>
             </div>
-        {% endfor %}
-    {% else %}
-        <p>Hozircha maqom mavjud emas.</p>
-    {% endif %}
+        {% endif %}
+    </div>
 </div>
-</body>
-</html>
+{% endblock %}
